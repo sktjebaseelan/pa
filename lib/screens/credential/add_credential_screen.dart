@@ -24,17 +24,35 @@ class _AddCredentialScreenState extends State<AddCredentialScreen> {
   String? _imagePath2;
 
   final picker = ImagePicker();
-
   Future<void> _pickImage(bool first) async {
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      setState(() {
-        if (first) {
-          _imagePath1 = picked.path;
-        } else {
-          _imagePath2 = picked.path;
-        }
-      });
+    final source = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select Image Source"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            child: Text("Camera"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            child: Text("Gallery"),
+          ),
+        ],
+      ),
+    );
+
+    if (source != null) {
+      final picked = await picker.pickImage(source: source);
+      if (picked != null) {
+        setState(() {
+          if (first) {
+            _imagePath1 = picked.path;
+          } else {
+            _imagePath2 = picked.path;
+          }
+        });
+      }
     }
   }
 
