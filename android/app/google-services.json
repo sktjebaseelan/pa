@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "378763017405",
+    "project_id": "pfner-9f1d9",
+    "storage_bucket": "pfner-9f1d9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378763017405:android:d033a362fcb1e429614bd4",
+        "android_client_info": {
+          "package_name": "com.example.expense_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9YgE6Fd8cwwIpbbnq3rm4633o0nsXLak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378763017405:android:86ce49e3697bc9dc614bd4",
+        "android_client_info": {
+          "package_name": "com.finance.pfner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9YgE6Fd8cwwIpbbnq3rm4633o0nsXLak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
