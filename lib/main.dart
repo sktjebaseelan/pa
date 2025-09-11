@@ -1,6 +1,9 @@
 import 'package:expense_tracker/cubit/credential_cubit.dart';
+import 'package:expense_tracker/cubit/employee_cubit.dart';
 import 'package:expense_tracker/cubit/navigation_cubit.dart';
 import 'package:expense_tracker/models/credential.dart';
+import 'package:expense_tracker/models/employee.dart';
+import 'package:expense_tracker/models/lead.dart';
 import 'package:expense_tracker/repositories/credential_repository.dart';
 import 'package:expense_tracker/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,12 @@ void main() async {
   Hive.registerAdapter(AadhaarCredentialAdapter());
   Hive.registerAdapter(PanCredentialAdapter());
   Hive.registerAdapter(EmailCredentialAdapter());
+  Hive.registerAdapter(EmployeeAdapter());
+  Hive.registerAdapter(LeadAdapter());
+  Hive.registerAdapter(LeadStatusAdapter());
+
+  await Hive.openBox<Employee>('employees');
+  await Hive.openBox<Lead>('leads');
   runApp(ExpenseTrackerApp());
 }
 
@@ -39,9 +48,13 @@ class ExpenseTrackerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final employeeBox = Hive.box<Employee>('employees');
+    final leadBox = Hive.box<Lead>('leads');
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavigationCubit()),
+        BlocProvider(create: (_) => EmployeeCubit(employeeBox)),
+        BlocProvider(create: (_) => LeadCubit(leadBox)),
         BlocProvider<AccountBloc>(
           create: (context) =>
               AccountBloc(databaseRepository: DatabaseRepository())

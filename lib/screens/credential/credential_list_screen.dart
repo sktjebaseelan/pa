@@ -61,7 +61,9 @@ class CredentialListScreen extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           title: Text("${cred.type.toString().split('.').last} Details"),
-          content: SingleChildScrollView(child: _buildDetailContent(cred)),
+          content: SingleChildScrollView(
+            child: _buildDetailContent(cred, context),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -73,7 +75,27 @@ class CredentialListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailContent(BaseCredential cred) {
+  Widget _buildDetailContent(BaseCredential cred, BuildContext context) {
+    Widget buildImage(String? path) {
+      if (path == null) return SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => Dialog(
+                insetPadding: EdgeInsets.all(8),
+                backgroundColor: Colors.black,
+                child: InteractiveViewer(child: Image.file(File(path))),
+              ),
+            );
+          },
+          child: Image.file(File(path), height: 120),
+        ),
+      );
+    }
+
     if (cred is BankCredential) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,11 +104,7 @@ class CredentialListScreen extends StatelessWidget {
           Text("IFSC: ${cred.ifsc}"),
           Text("Account No: ${cred.accountNumber}"),
           Text("Type: ${cred.accountType}"),
-          if (cred.passbookImagePath != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Image.file(File(cred.passbookImagePath!), height: 120),
-            ),
+          buildImage(cred.passbookImagePath),
         ],
       );
     } else if (cred is AadhaarCredential) {
@@ -96,16 +114,8 @@ class CredentialListScreen extends StatelessWidget {
           Text("Name: ${cred.name}"),
           Text("Aadhaar No: ${cred.aadhaarNumber}"),
           Text("DOB: ${cred.dob}"),
-          if (cred.frontImagePath != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Image.file(File(cred.frontImagePath!), height: 120),
-            ),
-          if (cred.backImagePath != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Image.file(File(cred.backImagePath!), height: 120),
-            ),
+          buildImage(cred.frontImagePath),
+          buildImage(cred.backImagePath),
         ],
       );
     } else if (cred is PanCredential) {
